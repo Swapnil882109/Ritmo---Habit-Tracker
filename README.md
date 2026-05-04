@@ -1,5 +1,6 @@
 Ritmo – Habit Tracker App is a lightweight and user-friendly web application designed to help individuals build and maintain positive habits. The app allows users to create habits, track daily progress, and monitor consistency through a streak-based system.
 
+live link : https://ritmov4.netlify.app/
 Built using HTML, CSS, and JavaScript, Ritmo provides a fast and responsive experience without requiring any backend. It uses browser Local Storage to save user data, ensuring persistence even after refreshing the page.
 
 🔹 Features:
