@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ritmo – Set Reminder</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap');
+    :root{--b3:#4a90d9;--b4:#2563b0;--tl:#38b2ac;--rd:#e05252;--card:rgba(255,255,255,0.88);--t1:#1a2535;--t2:#4a5a72;--t3:#9aaabb;--r:20px;--sh:0 8px 32px rgba(37,99,176,0.13);}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Inter',sans-serif;min-height:100vh;background:linear-gradient(135deg,#e8f4fd 0%,#d0e9fa 40%,#b8d9f5 100%);color:var(--t1);overflow-x:hidden;}
+    body::before{content:'';position:fixed;top:-140px;right:-140px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(74,144,217,.22),transparent 70%);pointer-events:none;z-index:0;}
+    body::after{content:'';position:fixed;bottom:-100px;left:-100px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(56,178,172,.18),transparent 70%);pointer-events:none;z-index:0;}
+    nav{position:sticky;top:0;z-index:200;height:66px;background:rgba(255,255,255,.75);backdrop-filter:blur(18px);border-bottom:1px solid rgba(74,144,217,.14);display:flex;align-items:center;justify-content:space-between;padding:0 40px;box-shadow:0 2px 18px rgba(74,144,217,.08);}
+    .logo{font-family:'Nunito',sans-serif;font-size:1.8rem;font-weight:900;color:var(--b4);text-decoration:none;display:flex;align-items:center;gap:6px;}
+    .ld{display:inline-block;width:9px;height:9px;background:var(--tl);border-radius:50%;animation:pd 2s ease-in-out infinite;}
+    @keyframes pd{0%,100%{transform:scale(1)}50%{transform:scale(1.5);opacity:.6}}
+    .nl{display:flex;align-items:center;gap:6px;list-style:none;}
+    .nl a{font-size:.85rem;font-weight:600;color:var(--t2);text-decoration:none;padding:8px 16px;border-radius:50px;transition:all .2s;}
+    .nl a:hover{color:var(--b3);background:rgba(74,144,217,.1);}
+    .nl a.act{background:var(--b3);color:#fff;box-shadow:0 4px 14px rgba(74,144,217,.35);}
+    .page{position:relative;z-index:1;min-height:calc(100vh - 66px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 20px;}
+    @keyframes fu{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+    .ph{text-align:center;margin-bottom:28px;animation:fu .4s ease both;}
+    .ph h2{font-family:'Nunito',sans-serif;font-size:2rem;font-weight:900;color:var(--t1);}
+    .ph p{font-size:.87rem;color:var(--t3);margin-top:4px;}
+    .card{background:var(--card);border-radius:var(--r);box-shadow:var(--sh);padding:38px 44px;width:100%;max-width:560px;border:1px solid rgba(255,255,255,.7);backdrop-filter:blur(10px);animation:fu .5s cubic-bezier(.22,1,.36,1) both;}
+    .fld{margin-bottom:18px;}
+    .fld label{display:block;font-size:.74rem;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px;}
+    .fld input{width:100%;padding:13px 16px;border:1.5px solid rgba(74,144,217,.2);border-radius:12px;font-family:'Inter',sans-serif;font-size:.93rem;color:var(--t1);background:rgba(255,255,255,.7);outline:none;transition:all .2s;}
+    .fld input:focus{border-color:var(--b3);box-shadow:0 0 0 3px rgba(74,144,217,.15);background:#fff;}
+    .fld input::placeholder{color:var(--t3);}
+    .btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px 28px;border-radius:50px;border:none;font-family:'Inter',sans-serif;font-size:.93rem;font-weight:700;cursor:pointer;transition:all .22s;margin-bottom:12px;}
+    .bb{background:linear-gradient(135deg,var(--b3),var(--b4));color:#fff;box-shadow:0 5px 18px rgba(74,144,217,.38);}
+    .bb:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(74,144,217,.48);}
+    .dv{display:flex;align-items:center;gap:12px;margin:22px 0;color:var(--t3);font-size:.74rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;}
+    .dv::before,.dv::after{content:'';flex:1;height:1px;background:rgba(74,144,217,.15);}
+    .ri{background:rgba(74,144,217,.07);border-left:3px solid var(--b3);border-radius:12px;padding:13px 16px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:12px;animation:fu .35s ease both;}
+    .rn{font-weight:700;font-size:.9rem;color:var(--t1);}
+    .rt{font-size:.76rem;color:var(--t3);margin-top:2px;}
+    .rm{font-size:.78rem;color:var(--b3);font-style:italic;max-width:150px;text-align:right;}
+    .rdl{background:none;border:none;color:var(--rd);font-size:1.1rem;cursor:pointer;padding:4px 7px;border-radius:8px;transition:background .18s;}
+    .rdl:hover{background:rgba(224,82,82,.1);}
+    .emp{text-align:center;color:var(--t3);font-size:.85rem;padding:10px 0;}
+    .fn{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:28px;position:relative;z-index:1;}
+    .fn a{font-size:.8rem;font-weight:600;color:var(--t2);text-decoration:none;padding:8px 18px;border-radius:50px;background:rgba(255,255,255,.6);border:1px solid rgba(74,144,217,.15);transition:all .2s;}
+    .fn a:hover{background:#fff;color:var(--b3);box-shadow:0 4px 14px rgba(74,144,217,.15);}
+    .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(90px);padding:13px 28px;border-radius:50px;font-size:.87rem;font-weight:700;color:#fff;box-shadow:0 8px 28px rgba(0,0,0,.16);z-index:999;transition:transform .38s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;background:var(--t1);}
+    .toast.show{transform:translateX(-50%) translateY(0);}
+    .toast.ok{background:linear-gradient(135deg,var(--tl),#2c9e99);}
+    .toast.err{background:linear-gradient(135deg,var(--rd),#c03030);}
+    .toast.info{background:linear-gradient(135deg,var(--b3),var(--b4));}
+    @media(max-width:600px){nav{padding:0 18px;}.card{padding:28px 22px;}.rm{display:none;}}
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="main.html" class="logo">Ritmo<span class="ld"></span></a>
+    <ul class="nl">
+      <li><a href="main.html">Home</a></li>
+      <li><a href="streak.html">🔥 Streak</a></li>
+      <li><a href="achievements.html" class="act">🏆 Badges</a></li>
+    </ul>
+  </nav>
+  <div class="page">
+    <div class="ph"><h2>⏰ Set a Reminder</h2><p>Never miss a habit — schedule your daily nudge.</p></div>
+    <div class="card">
+      <div class="fld"><label for="hn">Habit Name</label><input type="text" id="hn" placeholder="e.g. Morning Meditation"/></div>
+      <div class="fld"><label for="ht">Reminder Time</label><input type="time" id="ht"/></div>
+      <div class="fld"><label for="hm">Motivational Message</label><input type="text" id="hm" placeholder="e.g. Rise and shine, let's meditate!"/></div>
+      <button class="btn bb" onclick="save()">💾 Save Reminder</button>
+      <div class="dv">Saved Reminders</div>
+      <div id="rlist"></div>
+      <p class="emp" id="emp" style="display:none">No reminders yet. Add one above! 📝</p>
+    </div>
+    <div class="fn">
+      <a href="main.html">🏠 Home</a>
+      <a href="streak.html">🔥 Streak</a>
+      <a href="achievements.html">🏆 Achievements</a>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+  <script>
+    function toast(msg,type){const t=document.getElementById('toast');t.textContent=msg;t.className='toast '+(type||'');requestAnimationFrame(()=>t.classList.add('show'));setTimeout(()=>t.classList.remove('show'),2500);}
+    function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+    function fmt(ts){if(!ts)return'';const[h,m]=ts.split(':').map(Number);const ap=h>=12?'PM':'AM';const h12=h%12||12;return h12+':'+(m<10?'0':'')+m+' '+ap;}
+    function save(){
+      const n=document.getElementById('hn').value.trim();
+      const t=document.getElementById('ht').value;
+      const m=document.getElementById('hm').value.trim();
+      if(!n){toast('Please enter a habit name!','err');return;}
+      if(!t){toast('Please select a time!','err');return;}
+      const r={id:Date.now(),name:n,time:t,message:m||'Time for your habit!'};
+      const rs=JSON.parse(localStorage.getItem('reminders')||'[]');
+      rs.push(r);localStorage.setItem('reminders',JSON.stringify(rs));
+      document.getElementById('hn').value='';document.getElementById('ht').value='';document.getElementById('hm').value='';
+      toast('Reminder saved! ⏰','ok');render();
+    }
+    function del(id){
+      let rs=JSON.parse(localStorage.getItem('reminders')||'[]');
+      rs=rs.filter(r=>r.id!==id);localStorage.setItem('reminders',JSON.stringify(rs));
+      toast('Reminder deleted!','info');render();
+    }
+    function render(){
+      const rs=JSON.parse(localStorage.getItem('reminders')||'[]');
+      const list=document.getElementById('rlist'),emp=document.getElementById('emp');
+      list.innerHTML='';
+      if(!rs.length){emp.style.display='block';return;}
+      emp.style.display='none';
+      rs.sort((a,b)=>a.time.localeCompare(b.time));
+      rs.forEach(r=>{
+        const el=document.createElement('div');el.className='ri';
+        el.innerHTML=`<div><div class="rn">📌 ${esc(r.name)}</div><div class="rt">🕐 ${fmt(r.time)}</div></div><div class="rm">"${esc(r.message)}"</div><button class="rdl" onclick="del(${r.id})">🗑️</button>`;
+        list.appendChild(el);
+      });
+    }
+    render();
+  </script>
+</body>
+</html>
